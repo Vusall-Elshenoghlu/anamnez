@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pasiyentin Tibbi Anamnez Forması</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Serif:ital,wght@0,400;0,600;0,700;1,400&family=Noto+Sans:wght@400;500;600&display=swap');
+
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  :root {
+    --primary: #1a2744;
+    --accent: #2e5fa3;
+    --light-accent: #dce8f5;
+    --border: #b0bec5;
+    --mid: #546e7a;
+    --bg: #ffffff;
+    --light-bg: #f4f7fb;
+    --rule: #cfd8dc;
+    --check-size: 10px;
+  }
+
+  body {
+    background: #e0e0e0;
+    font-family: 'Noto Sans', sans-serif;
+    font-size: 9pt;
+    color: #1a1a1a;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    width: 210mm;
+    min-height: 297mm;
+    background: white;
+    margin: 10mm auto;
+    padding: 12mm 14mm 10mm 14mm;
+    position: relative;
+    page-break-after: always;
+    overflow: hidden;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 2.5px solid var(--primary);
+    padding-bottom: 7px;
+    margin-bottom: 9px;
+  }
+
+  .header-logo {
+    width: 36px;
+    height: 36px;
+    flex-shrink: 0;
+  }
+
+  .header-text h1 {
+    font-family: 'Noto Serif', serif;
+    font-size: 13pt;
+    font-weight: 700;
+    color: var(--primary);
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+  }
+
+  .header-text p {
+    font-size: 7.5pt;
+    color: var(--mid);
+    margin-top: 1px;
+  }
+
+  .header-badge {
+    margin-left: auto;
+    text-align: right;
+    font-size: 7pt;
+    color: var(--mid);
+    line-height: 1.5;
+  }
+
+  .header-badge span {
+    display: block;
+    font-weight: 600;
+    color: var(--primary);
+    font-size: 8pt;
+  }
+
+  /* ── NOTICE ── */
+  .notice {
+    background: var(--light-bg);
+    border-left: 3px solid var(--accent);
+    padding: 5px 8px;
+    font-size: 7.8pt;
+    color: var(--mid);
+    margin-bottom: 9px;
+    line-height: 1.45;
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin-bottom: 8px;
+  }
+
+  .section-title {
+    font-family: 'Noto Serif', serif;
+    font-size: 9pt;
+    font-weight: 700;
+    color: var(--bg);
+    background: var(--primary);
+    padding: 3px 8px;
+    margin-bottom: 6px;
+    letter-spacing: 0.2px;
+  }
+
+  .section-title .num {
+    font-size: 8pt;
+    opacity: 0.75;
+    margin-right: 4px;
+  }
+
+  /* ── GRID ROWS ── */
+  .row {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 4px;
+    flex-wrap: wrap;
+  }
+
+  .row label {
+    font-size: 8.2pt;
+    color: #333;
+    white-space: nowrap;
+  }
+
+  .line {
+    flex: 1;
+    border-bottom: 1px solid var(--border);
+    min-width: 30px;
+    height: 11px;
+  }
+
+  .line-short { min-width: 18mm; max-width: 35mm; }
+  .line-med   { min-width: 40mm; max-width: 70mm; }
+  .line-long  { min-width: 55mm; }
+  .line-full  { width: 100%; }
+
+  /* ── CHECKBOX ── */
+  .cb-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    margin-right: 8px;
+    white-space: nowrap;
+  }
+
+  .cb {
+    width: var(--check-size);
+    height: var(--check-size);
+    border: 1.3px solid #555;
+    display: inline-block;
+    flex-shrink: 0;
+    vertical-align: middle;
+  }
+
+  .cb-label {
+    font-size: 8pt;
+    vertical-align: middle;
+  }
+
+  /* ── YES/NO INLINE ── */
+  .yn-row {
+    display: flex;
+    align-items: baseline;
+    gap: 5px;
+    margin-bottom: 3.5px;
+    padding-left: 2px;
+  }
+
+  .yn-row .q-text {
+    flex: 1;
+    font-size: 8.2pt;
+    color: #222;
+    padding-left: 2px;
+    border-left: 2px solid var(--light-accent);
+  }
+
+  .yn-options {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ── TWO-COL DISEASE TABLE ── */
+  .disease-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--rule);
+    margin-bottom: 5px;
+  }
+
+  .dg-header {
+    background: var(--light-bg);
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    padding: 3px 6px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 1px solid var(--rule);
+    gap: 10px;
+    align-items: center;
+  }
+
+  .dg-header-pair {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .dg-col-head {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    background: var(--light-bg);
+    padding: 2.5px 6px;
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: var(--primary);
+    border-bottom: 1px solid var(--rule);
+    gap: 8px;
+    align-items: center;
+  }
+
+  .dg-col-head .yn-head {
+    display: flex;
+    gap: 8px;
+    font-size: 7pt;
+  }
+
+  .dg-col-head:first-child {
+    border-right: 1px solid var(--rule);
+  }
+
+  .dg-row-pair {
+    display: contents;
+  }
+
+  .dg-cell {
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    padding: 2.5px 6px;
+    border-bottom: 1px solid var(--rule);
+    gap: 8px;
+    align-items: center;
+    font-size: 8pt;
+  }
+
+  .dg-cell:nth-child(odd) {
+    border-right: 1px solid var(--rule);
+  }
+
+  .dg-cell .yn-mini {
+    display: flex;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+
+  /* ── PAIN GRID ── */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 5px;
+    margin-bottom: 5px;
+  }
+
+  .pain-box {
+    border: 1px solid var(--rule);
+    padding: 4px 6px;
+    background: var(--light-bg);
+  }
+
+  .pain-box-title {
+    font-size: 7.5pt;
+    font-weight: 600;
+    color: var(--primary);
+    margin-bottom: 3px;
+    border-bottom: 1px dashed var(--border);
+    padding-bottom: 2px;
+  }
+
+  .pain-box .cb-group {
+    display: flex;
+    margin-bottom: 2px;
+    margin-right: 0;
+  }
+
+  /* ── ALLERGY / SPECIAL ── */
+  .special-box {
+    border: 1px solid var(--rule);
+    padding: 5px 7px;
+    margin-bottom: 5px;
+    background: var(--light-bg);
+  }
+
+  /* ── WOMEN SECTION ── */
+  .women-box {
+    border: 1.5px dashed var(--accent);
+    padding: 5px 8px;
+    margin-bottom: 5px;
+    background: #f0f6ff;
+  }
+
+  .women-box .section-label {
+    font-size: 7.8pt;
+    font-weight: 700;
+    color: var(--accent);
+    margin-bottom: 4px;
+    display: block;
+  }
+
+  /* ── SIGNATURE ── */
+  .signature-box {
+    border: 1px solid var(--border);
+    padding: 7px 10px;
+    background: var(--light-bg);
+    margin-top: 6px;
+  }
+
+  .sig-text {
+    font-size: 7.8pt;
+    color: #333;
+    line-height: 1.5;
+    margin-bottom: 8px;
+    font-style: italic;
+  }
+
+  .sig-fields {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  .sig-field label {
+    font-size: 7.5pt;
+    color: var(--mid);
+    display: block;
+    margin-bottom: 2px;
+  }
+
+  /* ── PAGE FOOTER ── */
+  .page-footer {
+    position: absolute;
+    bottom: 7mm;
+    left: 14mm;
+    right: 14mm;
+    display: flex;
+    justify-content: space-between;
+    font-size: 7pt;
+    color: var(--border);
+    border-top: 1px solid var(--rule);
+    padding-top: 3px;
+  }
+
+  /* ── PAGE 2 continuation header ── */
+  .cont-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 2px solid var(--primary);
+    padding-bottom: 5px;
+    margin-bottom: 9px;
+  }
+
+  .cont-header h2 {
+    font-family: 'Noto Serif', serif;
+    font-size: 10pt;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  .cont-header p {
+    font-size: 7.5pt;
+    color: var(--mid);
+  }
+
+  /* ── COMPLAINT TEXT AREA ── */
+  .write-area {
+    border: 1px solid var(--border);
+    height: 16mm;
+    width: 100%;
+    background: white;
+    margin-top: 3px;
+    margin-bottom: 5px;
+  }
+
+  .field-label {
+    font-size: 8pt;
+    color: var(--mid);
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  /* ── PRINT ── */
+  @media print {
+    body { background: white; }
+    .page {
+      margin: 0;
+      padding: 12mm 14mm 12mm 14mm;
+      page-break-after: always;
+      box-shadow: none;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════ PAGE 1 ═══════════════════════════════ -->
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <svg class="header-logo" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="#1a2744" stroke-width="1.5" fill="#dce8f5"/>
+      <rect x="15" y="8" width="6" height="20" rx="1.5" fill="#1a2744"/>
+      <rect x="8" y="15" width="20" height="6" rx="1.5" fill="#1a2744"/>
+    </svg>
+    <div class="header-text">
+      <h1>PASİYENTİN TİBBİ ANAMNEZ FORMASI</h1>
+      <p>Stomatoloji Klinika — Məxfi Tibbi Sənəd</p>
+    </div>
+    <div class="header-badge">
+      <span>Forma № _______</span>
+      Tarix: ____/____/2026
+    </div>
+  </div>
+
+  <!-- NOTICE -->
+  <div class="notice">
+    Hörmətli pasiyent, sizə daha təhlükəsiz və keyfiyyətli stomatoloji xidmət göstərə bilməyimiz üçün zəhmət olmasa aşağıdakı anketi diqqətlə və dəqiq doldurun. Qeyd etdiyiniz məlumatlar tamamilə <strong>məxfi</strong> saxlanılır.
+  </div>
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-title"><span class="num">1.</span> Şəxsi Məlumatlar</div>
+
+    <div class="row">
+      <label>Adı, Soyadı, Atasının adı:</label>
+      <div class="line line-long"></div>
+    </div>
+    <div class="row">
+      <label>Doğum tarixi (gün/ay/il):</label>
+      <div class="line line-short"></div>
+      <label>Cinsiniz:</label>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Qadın</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Kişi</span></span>
+    </div>
+    <div class="row">
+      <label>Telefon nömrəsi:</label>
+      <div class="line line-med"></div>
+      <label>Hansı bölgədənsiniz:</label>
+      <div class="line line-med"></div>
+    </div>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-title"><span class="num">2.</span> Stomatoloji Anamnez — Şikayətlər</div>
+
+    <div class="row" style="margin-bottom:5px;">
+      <label>Klinikamıza müraciətinizin əsas səbəbi:</label>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Diş ağrısı</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Rutin müayinə / Təmizlik</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Estetik şikayətlər</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Diş əti qanaması</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Digər:</span></span>
+      <div class="line line-short"></div>
+    </div>
+
+    <div class="yn-row">
+      <div class="q-text">Son 6 ayda diş həkimində olmusunuzmu?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Dişlərinizi fırçalayarkən qanama olurmu?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">İsti, soyuq və ya şirin qidalara qarşı həssaslıq var mı?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Diş sıxma (bruksizm) və ya qıcama vərdişiniz var mı?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Əvvəllər diş müalicəsi zamanı hər hansı problem / allergik reaksiya yaşanıbmı?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-title"><span class="num">3.</span> Ümumi Tibbi Anamnez — Sağlamlıq Vəziyyəti</div>
+
+    <!-- Disease grid headers -->
+    <div class="disease-grid">
+      <!-- Header row -->
+      <div class="dg-col-head">
+        <span>Xəstəlik / Vəziyyət</span>
+        <div class="yn-head"><span>Bəli</span><span>Xeyr</span></div>
+      </div>
+      <div class="dg-col-head">
+        <span>Xəstəlik / Vəziyyət</span>
+        <div class="yn-head"><span>Bəli</span><span>Xeyr</span></div>
+      </div>
+      <!-- Row 1 -->
+      <div class="dg-cell"><span>Ürək-damar xəstəlikləri / İnfarkt</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Şəkərli diabet</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <!-- Row 2 -->
+      <div class="dg-cell"><span>Yüksək / aşağı qan təzyiqi</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Astma / Tənəffüs problemləri</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <!-- Row 3 -->
+      <div class="dg-cell"><span>Qan laxtalanma problemi / Anemiya</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Qaraciyər xəstəlikləri / Hepatit</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <!-- Row 4 -->
+      <div class="dg-cell"><span>Böyrək çatışmazlığı</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Mədə-bağırsaq xəstəlikləri (Xora v.s.)</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <!-- Row 5 -->
+      <div class="dg-cell"><span>Epilepsiya / Qıcolmalar</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Yoluxucu xəstəliklər (HİV, Vərəm v.s.)</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <!-- Row 6 -->
+      <div class="dg-cell"><span>Onkoloji xəstəliklər (Xərçəng)</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+      <div class="dg-cell"><span>Tiroid (Zob) xəstəlikləri</span><div class="yn-mini"><span class="cb"></span><span class="cb"></span></div></div>
+    </div>
+
+    <div class="row">
+      <label>Son 6 ayda əməliyyat / ciddi xəstəlik olubmu?</label>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli:</span></span>
+      <div class="line line-long"></div>
+    </div>
+    <div class="row">
+      <label>Daimi istifadə etdiyiniz dərmanlar (xüsusilə qandurulducular):</label>
+      <div class="line line-long"></div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Stomatoloji Klinika — Tibbi Anamnez Forması</span>
+    <span>Səhifə 1 / 2</span>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════ PAGE 2 ═══════════════════════════════ -->
+<div class="page">
+
+  <!-- CONTINUATION HEADER -->
+  <div class="cont-header">
+    <div>
+      <h2>PASİYENTİN TİBBİ ANAMNEZ FORMASI — Davam</h2>
+      <p>Adı, Soyadı: _____________________________________ &nbsp;&nbsp; Tarix: ____/____/2026</p>
+    </div>
+    <svg width="28" height="28" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="18" cy="18" r="17" stroke="#1a2744" stroke-width="1.5" fill="#dce8f5"/>
+      <rect x="15" y="8" width="6" height="20" rx="1.5" fill="#1a2744"/>
+      <rect x="8" y="15" width="20" height="6" rx="1.5" fill="#1a2744"/>
+    </svg>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-title"><span class="num">4.</span> Allergiya və Xüsusi Vəziyyətlər</div>
+
+    <div class="special-box">
+      <div class="row" style="margin-bottom:4px;">
+        <label>Hər hansı dərmana, materiala və ya qidaya qarşı allergiyanız varmı?</label>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+      </div>
+      <div class="row" style="margin-left:4px;">
+        <label style="font-size:7.8pt; color:#555;">Əgər bəli, zəhmət olmasa qeyd edin (Penisillin, Aspirin, Lokal anesteziya, Lateks v.s.):</label>
+        <div class="line line-long"></div>
+      </div>
+    </div>
+
+    <div class="row">
+      <label>Siqaret və ya digər tütün məhsullarından istifadə edirsinizmi?</label>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+    </div>
+
+    <!-- WOMEN ONLY -->
+    <div class="women-box" style="margin-top:5px;">
+      <span class="women-box section-label">YALNIZ QADIN PASİYENTLƏR ÜÇÜN:</span>
+      <div class="row">
+        <label>Hamiləsinizmi?</label>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli (</span></span>
+        <div class="line line-short"></div>
+        <label>aylıq)</label>
+        &nbsp;&nbsp;
+        <label>Süd verirsinizmi?</label>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section">
+    <div class="section-title"><span class="num">5.</span> İndiki Şikayət və Ağrının Xüsusiyyətləri</div>
+
+    <span class="field-label">Sizi narahat edən əsas problem (öz sözlərinizlə qısaca qeyd edin):</span>
+    <div class="write-area"></div>
+
+    <div style="font-size:8pt; font-weight:600; color:var(--primary); margin-bottom:4px;">Əgər şikayətiniz AĞRI ilə bağlıdırsa, aşağıdakıları dəqiqləşdirin:</div>
+
+    <div class="pain-grid">
+      <!-- Box 1: Type -->
+      <div class="pain-box">
+        <div class="pain-box-title">Ağrının növü</div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Kəskin və sızıldayan</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Spontan (öz-özünə)</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Zonqlayan (nəbz kimi)</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Yalnız çeynəyəndə</span></div>
+      </div>
+      <!-- Box 2: Duration -->
+      <div class="pain-box">
+        <div class="pain-box-title">Ağrı nə qədər davam edir?</div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Anidir (gəlib-gedir)</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Uzunmüddətli (sabit)</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Yalnız gecələr artır</span></div>
+      </div>
+      <!-- Box 3: Trigger -->
+      <div class="pain-box">
+        <div class="pain-box-title">Ağrını nə tətikləyir?</div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Soyuq</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">İsti</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Şirin / Turş</span></div>
+        <div class="cb-group"><span class="cb"></span><span class="cb-label">Dişləri sıxmaq</span></div>
+      </div>
+    </div>
+
+    <div style="font-size:8pt; font-weight:600; color:var(--primary); margin-bottom:3px;">Digər əlamətlər:</div>
+
+    <div class="yn-row">
+      <div class="q-text">Ağızda və ya diş ətində şişkinlik var mı?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Dişlərinizi fırçalayarkən qanama olurmu?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Ağız qoxusu və ya pis dad hiss edirsinizmi?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Son 6 ayda diş həkimində olmusunuzmu?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+    <div class="yn-row">
+      <div class="q-text">Diş sıxma (bruksizm) və ya qıcama vərdişiniz var mı?</div>
+      <div class="yn-options">
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Bəli</span></span>
+        <span class="cb-group"><span class="cb"></span><span class="cb-label">Xeyr</span></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 6: SIGNATURE -->
+  <div class="section">
+    <div class="section-title"><span class="num">6.</span> Təsdiq və İmza</div>
+    <div class="signature-box">
+      <p class="sig-text">
+        Yuxarıda qeyd etdiyim bütün məlumatların doğru olduğunu və sağlamlıq vəziyyətimdəki dəyişikliklər barədə həkimi məlumatlandıracağımı təsdiq edirəm. Gizlədilən hər hansı bir məlumata görə məsuliyyət mənim üzərimə düşür.
+      </p>
+      <div class="sig-fields">
+        <div>
+          <label>Pasiyentin imzası:</label>
+          <div class="line line-full"></div>
+        </div>
+        <div>
+          <label>Tarix:</label>
+          <div class="line line-full"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-footer">
+    <span>Stomatoloji Klinika — Tibbi Anamnez Forması</span>
+    <span>Səhifə 2 / 2</span>
+  </div>
+</div>
+
+</body>
+</html>
